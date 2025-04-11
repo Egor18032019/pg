@@ -22,17 +22,20 @@ select max(t2.day) from t2 left join t1 on t2.t_id = t1.id and t1.name like 'a%'
 Проблема: Очень медленно
 Решение: Создать доп.индекс на t2(id) и t1(name)
 ```shell
-CREATE INDEX CONCURRENTLY t1_id_idx ON t2(id);
+CREATE INDEX CONCURRENTLY t2_id_idx ON t2(id);
 ```
 ```shell
 CREATE INDEX t1_name_idx ON t1(name);
 ```
 После индексов время выполнения составило  3065.928 ms   ![2.1 report.jpg](../2.1%20report.jpg)
 - что не достаточно.
+
 Далее добавим еще индексов
+
 ```shell
 CREATE INDEX idx_t2_day ON t2(day);
 ```
+
 Итог 3135.981 ms ![2.2 report.jpg](../2.2%20report.jpg)
 - что не достаточно.
 Далее добавим еще индексов
@@ -40,4 +43,12 @@ CREATE INDEX idx_t2_day ON t2(day);
 CREATE INDEX t2_covering_idx ON t2(t_id, day DESC);
 ```
 Итог 3117.515 ms ![2.3 report.jpg](../2.3%20report.jpg)
- 
+
+Запросы править нельзя. Пока идей больше нет;
+
+[3] ускорить запрос "anti-join", добиться времени выполнения < 10sec
+```shell
+EXPLAIN ANALYZE
+select day from t2 where t_id not in ( select t1.id from t1 );
+```
+Итог
