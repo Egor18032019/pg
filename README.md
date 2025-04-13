@@ -14,13 +14,13 @@ psql --username=postgres --dbname=mishka
 EXPLAIN ANALYZE
 select name from t1 where id = 50000;
 ```
-Первоначальное время выполнение составило: 113,221ms![1 report.png](../1%20report.png)
+Первоначальное время выполнение составило: 113,221ms![1 report.png](1%20report.png)
 Проблема: Медленно
 Решение: Был применен индекс
 ```shell
 CREATE INDEX CONCURRENTLY t1_id ON t1(id);
 ```
-Итоговое время выполнения составило: 0,032ms![1.1 report.png](../1.1%20report.png)
+Итоговое время выполнения составило: 0,032ms![1.1 report.png](1.1%20report.png)
 
 [2] ускорить запрос "max + left join", добиться времени выполнения < 10ms
 ```shell
@@ -36,14 +36,14 @@ CREATE INDEX CONCURRENTLY t2_id ON t2(id);
 ```shell
 CREATE INDEX CONCURRENTLY t1_name ON t1(name);
 ```
-После индексов время выполнения составило  3065.928 ms   ![2.1 report.jpg](../2.1%20report.jpg)
+После индексов время выполнения составило  3065.928 ms   ![2.1 report.jpg](2.1%20report.jpg)
 - что не достаточно.
 
 Далее добавим еще индексов
 
 CREATE INDEX t2_day ON t2(day);
 
-Итог 3135.981 ms ![2.2 report.jpg](../2.2%20report.jpg)
+Итог 3135.981 ms ![2.2 report.jpg](2.2%20report.jpg)
 - что не достаточно.
 Проверил работу этого же на другом ноуте с ОС Linux время запроса составило:`![2 report on Linux.png](2%20report%20on%20Linux.png)
 **Planning Time: 1.145 ms
