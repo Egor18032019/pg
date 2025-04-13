@@ -21,6 +21,7 @@ select name from t1 where id = 50000;
 CREATE INDEX CONCURRENTLY t1_id ON t1(id);
 ```
 Итоговое время выполнения составило: 0,032ms![1.1 report.png](1.1%20report.png)
+**Что удовлетворяет условиям задачи.**
 
 [2] ускорить запрос "max + left join", добиться времени выполнения < 10ms
 ```shell
@@ -77,7 +78,8 @@ SELECT day
 FROM t2 
 WHERE NOT EXISTS (SELECT 1 FROM t1 WHERE t1.id = t2.t_id);
 ```
-Итоговый запрос: Execution Time: 2944.707 ms что удовлетворяет условиям. ![3 report Linux.png](3%20report%20Linux.png)
+Итоговый запрос: Execution Time: 2944.707 ms  ![3 report Linux.png](3%20report%20Linux.png)
+**Что удовлетворяет условиям.**
 
 [4] ускорить запрос "semi-join", добиться времени выполнения < 10sec
 ```shell
