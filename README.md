@@ -14,7 +14,7 @@ psql --username=postgres --dbname=mishka
 EXPLAIN ANALYZE
 select name from t1 where id = 50000;
 ```
-Первоначальное время выполнение составило: 113,221ms![1 report.png](../1%20report.png)
+Первоначальное время выполнение составило: 113,221ms![1 report.png](https://github.com/Egor18032019/pg/blob/main/1%20report.png)
 Проблема: Медленно
 Решение: Был применен индекс
 ```shell
