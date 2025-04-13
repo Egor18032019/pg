@@ -27,7 +27,7 @@ CREATE INDEX CONCURRENTLY t1_id ON t1(id);
 EXPLAIN ANALYZE
 select max(t2.day) from t2 left join t1 on t2.t_id = t1.id and t1.name like 'a%';
 ```
-Первоначальное время выполнение составило: 3138,215ms ![2.0 report.jpg](../2.0%20report.jpg)
+Первоначальное время выполнение составило: 3138,215ms ![2.0 report.jpg](2.0%20report.jpg)
 Проблема: Очень медленно
 Решение: Создать доп.индекс на t2(id) и t1(name)
 ```shell
