@@ -4,7 +4,7 @@
 docker run --name pg -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=mishka -d postgres:11-alpine
 ```
 ```shell
-docker exec -it f1a42ba852c8a09130f074bbc1a76bb71d2dd36a9b275b8503cff1bbee3826d4 sh
+docker exec -it b06093992ff2 bash
 ```
 ```shell
 psql --username=postgres --dbname=mishka
@@ -88,7 +88,7 @@ WHERE NOT EXISTS (SELECT 1 FROM t1 WHERE t1.id = t2.t_id);
 EXPLAIN ANALYZE
 select day from t2 where t_id in ( select t1.id from t1 where t2.t_id = t1.id) and day > to_char(date_trunc('day',now()- '1 months'::interval),'yyyymmdd');
 ```
-время выполнения:
+Итог:
 **Planning Time: 0.142 ms
 Execution Time: 5598.496 ms**
 Делаем индексы:
@@ -111,17 +111,7 @@ AND t2.day > to_char(date_trunc('day', now() - interval '1 month'), 'yyyymmdd');
 - время выполнения составит Execution Time: 5084.128 ms
 
 [5] ускорить работу "savepoint + update", добиться постоянной во времени производительности (число транзакций в секунду)
-```shell
-SELECT '\set id random(1,10000000)'
-UNION ALL
-SELECT 'BEGIN;'
-UNION ALL
-SELECT 'SAVEPOINT v' || v.id || ';'                || E'\n' 
-    || 'UPDATE t1 SET name = name WHERE id = :id;' || E'\n'
-FROM GENERATE_SERIES(1, 100) v(id)
-UNION ALL
-SELECT E'COMMIT;\n';
-```
+ 
 
 ```shell
 psql -c 'select txid_current(); select pg_sleep(3600);' &
